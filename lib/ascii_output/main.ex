@@ -14,13 +14,13 @@ defmodule AsciiOutput.Main do
 
   @spec ascii_output(input_map, ascii_char_fn) :: row_list
   def ascii_output(input_map, ascii_char_fn, filler \\ @default_filler) do
-    # package = {ascii_char_fn, filler}
-    Enum.reduce(1..max_y(input_map), [], &output_add_row(input_map, ascii_char_fn, &1, &2))
+    # draw_tools = {ascii_char_fn, filler}
+    Enum.reduce(1..max_y(input_map), [], &output_add_row(&1, &2, input_map, ascii_char_fn))
     |> Enum.reverse()
   end
 
 
-  defp output_add_row(input_map, ascii_char_fn, row_num, row_list) do
+  defp output_add_row(row_num, row_list, input_map, ascii_char_fn) do
     row =
       Enum.reduce(1..max_x(input_map), [], &output_add_col(&1, &2, row_num, input_map, ascii_char_fn))
       |> Enum.reverse()
