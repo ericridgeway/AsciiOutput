@@ -18,6 +18,30 @@ defmodule AsciiOutput.Main do
       ~w[a . . c],
       ~w[b . . .],
     ]
+
+    Enum.reduce(1..max_y(input_map), [], &output_add_row(input_map, ascii_char_fn, &1, &2))
+    |> Enum.reverse()
+  end
+
+
+  defp output_add_row(input_map, ascii_char_fn, row_num, row_list) do
+    row =
+      Enum.reduce(1..max_x(input_map), [], &output_add_col(&1, &2, row_num, input_map, ascii_char_fn))
+      |> Enum.reverse()
+
+    [row | row_list]
+  end
+
+  defp output_add_col(col_num, col_list, row_num, input_map, ascii_char_fn) do
+    value = Map.get(input_map, {col_num, row_num})
+    ascii =
+      if value == nil do
+        @default_filler
+      else
+        ascii_char_fn.(value)
+      end
+
+    [ascii | col_list]
   end
 
   # TODO defp
