@@ -1,6 +1,5 @@
 # AsciiOutput
 
-**TODO: Add description**
 
 ## Installation
 
