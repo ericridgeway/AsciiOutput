@@ -18,15 +18,15 @@ defmodule AsciiOutputTest.Main do
     ]
   end
 
-  # tmp internal
-  test "Max-x and y" do
+  test "Alternate default value" do
     given_xy_map = %{
-      {1,1} => %{name: "a"},
-      {1,2} => %{name: "b"},
-      {4,1} => %{name: "c"},
+      {5,1} => %{name: "x"},
     }
 
-    assert given_xy_map |> Main.max_x == 4
-    assert given_xy_map |> Main.max_y == 2
+    ascii_char_fn = &Map.get(&1, :name)
+
+    assert Main.ascii_output(given_xy_map, ascii_char_fn, "0") == [
+      ~w[0 0 0 0 x],
+    ]
   end
 end
