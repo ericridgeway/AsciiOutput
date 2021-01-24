@@ -18,4 +18,16 @@ defmodule AsciiOutputTest.Main do
       ~w[b . . .],
     ]
   end
+
+  # tmp internal
+  test "Max-x and y" do
+    given_xy_map = %{
+      {1,1} => %{name: "a"},
+      {1,2} => %{name: "b"},
+      {4,1} => %{name: "c"},
+    }
+
+    assert given_xy_map |> Main.max_x == 4
+    assert given_xy_map |> Main.max_y == 2
+  end
 end
