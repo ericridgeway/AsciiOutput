@@ -13,12 +13,8 @@ defmodule AsciiOutput.Main do
   @default_filler "."
 
   @spec ascii_output(input_map, ascii_char_fn) :: row_list
-  def ascii_output(input_map, ascii_char_fn) do
-    [
-      ~w[a . . c],
-      ~w[b . . .],
-    ]
-
+  def ascii_output(input_map, ascii_char_fn, filler \\ @default_filler) do
+    # package = {ascii_char_fn, filler}
     Enum.reduce(1..max_y(input_map), [], &output_add_row(input_map, ascii_char_fn, &1, &2))
     |> Enum.reverse()
   end
