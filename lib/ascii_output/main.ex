@@ -22,14 +22,20 @@ defmodule AsciiOutput.Main do
 
   # TODO defp
   def max_x(input_map) do
-    input_map
-    |> Enum.map(fn {{x,_y}, _value} -> x end)
-    |> Enum.max
+    get_x_key_fn()
+    |> max_some_key(input_map)
   end
   def max_y(input_map) do
-    input_map
-    |> Enum.map(fn {{_x,y}, _value} -> y end)
-    |> Enum.max
+    get_y_key_fn()
+    |> max_some_key(input_map)
   end
 
+  defp get_x_key_fn(), do: fn {{x,_}, _} -> x end
+  defp get_y_key_fn(), do: fn {{_,y}, _} -> y end
+
+  defp max_some_key(which_key_fn, map) do
+    map
+    |> Enum.map(which_key_fn)
+    |> Enum.max
+  end
 end
