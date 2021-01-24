@@ -20,6 +20,12 @@ defmodule AsciiOutput.Main do
     |> Enum.reverse()
   end
 
+  @spec max_x(input_map) :: integer
+  def max_x(input_map), do: get_x_key_fn() |> max_some_key(input_map)
+
+  @spec max_y(input_map) :: integer
+  def max_y(input_map), do: get_y_key_fn() |> max_some_key(input_map)
+
 
   defp output_add_row(row_num, row_list, input_map, draw_tools) do
     row =
@@ -39,16 +45,6 @@ defmodule AsciiOutput.Main do
       end
 
     [ascii | col_list]
-  end
-
-  # TODO defp
-  def max_x(input_map) do
-    get_x_key_fn()
-    |> max_some_key(input_map)
-  end
-  def max_y(input_map) do
-    get_y_key_fn()
-    |> max_some_key(input_map)
   end
 
   defp get_x_key_fn(), do: fn {{x,_}, _} -> x end
