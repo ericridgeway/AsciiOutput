@@ -21,10 +21,10 @@ defmodule AsciiOutput.Main do
   end
 
   @spec max_x(input_map) :: integer
-  def max_x(input_map), do: get_x_key_fn() |> max_some_key(input_map)
+  def max_x(input_map), do: max_some_key(input_map, &get_x_key/1)
 
   @spec max_y(input_map) :: integer
-  def max_y(input_map), do: get_y_key_fn() |> max_some_key(input_map)
+  def max_y(input_map), do: max_some_key(input_map, &get_y_key/1)
 
 
   defp output_add_row(row_num, row_list, input_map, draw_tools) do
@@ -47,10 +47,10 @@ defmodule AsciiOutput.Main do
     [ascii | col_list]
   end
 
-  defp get_x_key_fn(), do: fn {{x,_}, _} -> x end
-  defp get_y_key_fn(), do: fn {{_,y}, _} -> y end
+  defp get_x_key({{x,_}, _}), do: x
+  defp get_y_key({{_,y}, _}), do: y
 
-  defp max_some_key(which_key_fn, map) do
+  defp max_some_key(map, which_key_fn) do
     map
     |> Enum.map(which_key_fn)
     |> Enum.max
