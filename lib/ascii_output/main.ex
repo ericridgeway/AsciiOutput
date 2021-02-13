@@ -14,9 +14,10 @@ defmodule AsciiOutput.Main do
 
 
   @spec ascii_output(input_map, ascii_char_fn, filler) :: row_list
-  def ascii_output(input_map, ascii_char_fn, filler \\ ".") do
+  def ascii_output(input_map, ascii_char_fn, filler \\ ".", overwrite_size \\ nil) do
     draw_tools = {ascii_char_fn, filler}
-    Enum.reduce(1..max_y(input_map), [], &output_add_row(&1, &2, input_map, draw_tools))
+    size = overwrite_size || max_y(input_map)
+    Enum.reduce(1..size, [], &output_add_row(&1, &2, input_map, draw_tools, overwrite_size))
     |> Enum.reverse()
   end
 
@@ -27,9 +28,10 @@ defmodule AsciiOutput.Main do
   def max_y(input_map), do: max_some_key(input_map, &get_y_key/1)
 
 
-  defp output_add_row(row_num, row_list, input_map, draw_tools) do
+  defp output_add_row(row_num, row_list, input_map, draw_tools, overwrite_size) do
+    size = overwrite_size || max_x(input_map)
     row =
-      Enum.reduce(1..max_x(input_map), [], &output_add_col(&1, &2, row_num, input_map, draw_tools))
+      Enum.reduce(1..size, [], &output_add_col(&1, &2, row_num, input_map, draw_tools))
       |> Enum.reverse()
 
     [row | row_list]

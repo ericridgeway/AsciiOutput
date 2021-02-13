@@ -1,4 +1,6 @@
 # AsciiOutput
+{:ascii_output, git: "https://github.com/ericridgeway/AsciiOutput", tag: "0.0.2"},
+(Check tag #)
 
 
 ## Installation
