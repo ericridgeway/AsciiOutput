@@ -13,6 +13,13 @@ defmodule AsciiOutput.Main do
   @type col_list :: list(String.t)
 
 
+  # TODO spec
+  def ascii_output(input_map, ascii_char_fn, options) when is_list(options) do
+    filler = Keyword.get(options, :filler, ".")
+    size = Keyword.get(options, :size, nil)
+    ascii_output(input_map, ascii_char_fn, filler, size)
+  end
+
   @spec ascii_output(input_map, ascii_char_fn, filler) :: row_list
   def ascii_output(input_map, ascii_char_fn, filler \\ ".", overwrite_size \\ nil) do
     draw_tools = {ascii_char_fn, filler}
