@@ -6,30 +6,31 @@ defmodule AsciiOutput.Main do
   @type default :: any
 
   @type input_map :: %{{x,y} => value}
-  @type ascii_char_fn :: (value -> String.t)
+
+  @type ascii_char_fn :: (value -> String.t) | default
   @type filler :: String.t | default
+  @type size :: integer | default
 
   @type row_list :: list(col_list)
   @type col_list :: list(String.t)
 
+  @type option :: {:ascii_char_fn, ascii_char_fn} | {:filler, filler} | {:size, size}
 
-  # TODO spec
-  # def ascii_output(input_map, ascii_char_fn \\ nil, options \\ []) when is_list(options) do
-  def ascii_output(input_map, ascii_char_fn \\ nil, options \\ []) do
-    # ascii_char_fn = Keyword.get(options, :ascii_char_fn, & &1)
-    # ascii_char_fn = ascii_char_fn || & &1
-    ascii_char_fn = ascii_char_fn || Keyword.get(options, :ascii_char_fn, & &1)
+  @spec ascii_output(input_map) :: row_list
+  def ascii_output(input_map),
+    do: ascii_output(input_map, [])
+
+  @spec ascii_output(input_map, ascii_char_fn) :: row_list
+  def ascii_output(input_map, ascii_char_fn) when is_function(ascii_char_fn),
+    do: ascii_output(input_map, ascii_char_fn: ascii_char_fn)
+
+  @spec ascii_output(input_map, [option]) :: row_list
+  def ascii_output(input_map, options) do
+    ascii_char_fn = Keyword.get(options, :ascii_char_fn, & &1)
     filler = Keyword.get(options, :filler, ".")
     size = Keyword.get(options, :size, nil)
-    ascii_output(input_map, ascii_char_fn, filler, size)
-  end
 
-  # @spec ascii_output(input_map, ascii_char_fn, filler) :: row_list
-  defp ascii_output(input_map, ascii_char_fn, filler, overwrite_size) do
-    draw_tools = {ascii_char_fn, filler}
-    size = overwrite_size || max_y(input_map)
-    Enum.reduce(1..size, [], &output_add_row(&1, &2, input_map, draw_tools, overwrite_size))
-    |> Enum.reverse()
+    do_ascii_output(input_map, ascii_char_fn, filler, size)
   end
 
   @spec max_x(input_map) :: integer
@@ -38,6 +39,13 @@ defmodule AsciiOutput.Main do
   @spec max_y(input_map) :: integer
   def max_y(input_map), do: max_some_key(input_map, &get_y_key/1)
 
+
+  defp do_ascii_output(input_map, ascii_char_fn, filler, overwrite_size) do
+    draw_tools = {ascii_char_fn, filler}
+    size = overwrite_size || max_y(input_map)
+    Enum.reduce(1..size, [], &output_add_row(&1, &2, input_map, draw_tools, overwrite_size))
+    |> Enum.reverse()
+  end
 
   defp output_add_row(row_num, row_list, input_map, draw_tools, overwrite_size) do
     size = overwrite_size || max_x(input_map)

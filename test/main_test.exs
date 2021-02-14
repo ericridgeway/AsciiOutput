@@ -25,7 +25,7 @@ defmodule AsciiOutputTest.Main do
 
     ascii_char_fn = &Map.get(&1, :name)
 
-    assert Main.ascii_output(given_xy_map, ascii_char_fn, "0") == [
+    assert Main.ascii_output(given_xy_map, ascii_char_fn: ascii_char_fn, filler: "0") == [
       ~w[0 0 0 0 x],
     ]
   end
@@ -37,7 +37,7 @@ defmodule AsciiOutputTest.Main do
 
     ascii_char_fn = &Map.get(&1, :name)
 
-    assert Main.ascii_output(given_xy_map, ascii_char_fn, ".", 3) == [
+    assert Main.ascii_output(given_xy_map, ascii_char_fn: ascii_char_fn, size: 3) == [
       ~w[. . .],
       ~w[. . .],
       ~w[. . .],
@@ -59,9 +59,7 @@ defmodule AsciiOutputTest.Main do
     ]
 
     assert Main.ascii_output(given_xy_map) == [
-      ~w[. . .],
-      ~w[. . .],
-      ~w[. . .],
+      ~w[. . . c],
     ]
   end
 
