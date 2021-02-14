@@ -14,14 +14,18 @@ defmodule AsciiOutput.Main do
 
 
   # TODO spec
-  def ascii_output(input_map, ascii_char_fn, options) when is_list(options) do
+  # def ascii_output(input_map, ascii_char_fn \\ nil, options \\ []) when is_list(options) do
+  def ascii_output(input_map, ascii_char_fn \\ nil, options \\ []) do
+    # ascii_char_fn = Keyword.get(options, :ascii_char_fn, & &1)
+    # ascii_char_fn = ascii_char_fn || & &1
+    ascii_char_fn = ascii_char_fn || Keyword.get(options, :ascii_char_fn, & &1)
     filler = Keyword.get(options, :filler, ".")
     size = Keyword.get(options, :size, nil)
     ascii_output(input_map, ascii_char_fn, filler, size)
   end
 
-  @spec ascii_output(input_map, ascii_char_fn, filler) :: row_list
-  def ascii_output(input_map, ascii_char_fn, filler \\ ".", overwrite_size \\ nil) do
+  # @spec ascii_output(input_map, ascii_char_fn, filler) :: row_list
+  defp ascii_output(input_map, ascii_char_fn, filler, overwrite_size) do
     draw_tools = {ascii_char_fn, filler}
     size = overwrite_size || max_y(input_map)
     Enum.reduce(1..size, [], &output_add_row(&1, &2, input_map, draw_tools, overwrite_size))
