@@ -7,16 +7,14 @@ defmodule AsciiOutput.FromAsciiInput do
 
   @spec generate_map(ascii_input, translater) :: Main.input_map
   def generate_map(ascii_input, translater) do
-   ascii_input
-    |> Enum.with_index(1)
-    |> Enum.reduce(Map.new, &row_from_ascii(&1, &2, translater))
+    func = &row_from_ascii(&1, &2, translater)
+    do_index_thing(ascii_input, Map.new, func)
   end
 
 
   defp row_from_ascii({row, row_num}, new_map, translater) do
-    row
-    |> Enum.with_index(1)
-    |> Enum.reduce(new_map, &col_from_ascii(&1, &2, row_num, translater))
+    func = &col_from_ascii(&1, &2, row_num, translater)
+    do_index_thing(row, new_map, func)
   end
 
   defp col_from_ascii({".", _}, new_map, _, _), do: new_map
@@ -27,4 +25,10 @@ defmodule AsciiOutput.FromAsciiInput do
 
   defp lookup_translation(translater, value), do: Map.get(translater, value, value)
   defp add_val_to_map(val, map, key), do: Map.put(map, key, val)
+
+  defp do_index_thing(ascii_input, new_map, func) do
+    ascii_input
+    |> Enum.with_index(1)
+    |> Enum.reduce(new_map, func)
+  end
 end
