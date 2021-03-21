@@ -20,15 +20,16 @@ defmodule AsciiOutput.FromAsciiInput do
   end
 
   defp col_from_ascii({col, col_num}, new_map, row_num, translater) do
-    if col == "." do
-      new_map
-    else
-      case Map.get(translater, col) do
-        nil -> col
-        string_key -> string_key
+    # if col == "." do
+    #   new_map
+    # else
+      case {col, Map.get(translater, col)} do
+        {".", _} -> new_map
+        {_, nil} -> col
+        {_, string_key} -> string_key
       end
       |> add_val_to_map(new_map, {col_num, row_num})
-    end
+    # end
   end
 
   defp add_val_to_map(val, map, key), do: Map.put(map, key, val)
