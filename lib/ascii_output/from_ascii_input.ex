@@ -24,14 +24,16 @@ defmodule AsciiOutput.FromAsciiInput do
     if col == "." do
       new_map
     else
-      translation =
-        case Map.get(translater, col) do
-          nil -> col
-          string_key -> string_key
-        end
-
-        Map.put(new_map, {col_num, row_num}, translation)
+      case Map.get(translater, col) do
+        nil -> col
+        string_key -> string_key
+      end
+      |> func(new_map, {col_num, row_num})
     end
+  end
+
+  defp func(translation, new_map, key) do
+    Map.put(new_map, key, translation)
   end
 
 end
