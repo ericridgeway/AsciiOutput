@@ -23,19 +23,11 @@ defmodule AsciiOutput.FromAsciiInput do
     if col == "." do
       new_map
     else
-      update_map_with_col_string_translated(translater, col)
+      lookup_translation(translater, col)
       |> add_val_to_map(new_map, {col_num, row_num})
     end
   end
 
-  defp update_map_with_col_string_translated(translater, col) do
-    # case Map.get(translater, col) do
-    #   nil -> col
-    #   string_key -> string_key
-    # end
-
-    Map.get(translater, col, col)
-  end
-
+  defp lookup_translation(translater, value), do: Map.get(translater, value, value)
   defp add_val_to_map(val, map, key), do: Map.put(map, key, val)
 end
