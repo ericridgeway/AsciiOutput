@@ -9,7 +9,6 @@ defmodule AsciiOutput.FromAsciiInput do
   def generate_map(ascii_input, translater) do
    ascii_input
     |> Enum.with_index(1)
-    # |> Enum.reduce(Map.new, &rows_from_ascii/2)
     |> Enum.reduce(Map.new, &row_from_ascii(&1, &2, translater))
   end
 
@@ -28,12 +27,9 @@ defmodule AsciiOutput.FromAsciiInput do
         nil -> col
         string_key -> string_key
       end
-      |> func(new_map, {col_num, row_num})
+      |> add_val_to_map(new_map, {col_num, row_num})
     end
   end
 
-  defp func(translation, new_map, key) do
-    Map.put(new_map, key, translation)
-  end
-
+  defp add_val_to_map(val, map, key), do: Map.put(map, key, val)
 end
