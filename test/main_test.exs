@@ -63,6 +63,23 @@ defmodule AsciiOutputTest.Main do
     ]
   end
 
+  test "Better external api" do
+    given_xy_map = %{
+      {4,1} => "c",
+    }
+    ascii_char_fn = &Map.get(&1, :name)
+
+    assert AsciiOutput.draw(given_xy_map) == [
+      ~w[. . . c],
+    ]
+
+    assert AsciiOutput.draw(given_xy_map, ascii_char_fn: ascii_char_fn, size: 3) == [
+      ~w[. . .],
+      ~w[. . .],
+      ~w[. . .],
+    ]
+  end
+
   # TODO next Decide how I want the param sig to look. The prob atm is ascii_char_fn being EITHER 2nd param OR bundled in [] as 2nd/3rd param is weird.
   # .if this gets annoying I can also always delete this entire branch and just lazily require them to put "." in the filler param to get to overwrite_size
 end
