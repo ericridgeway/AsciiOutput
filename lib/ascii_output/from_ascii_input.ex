@@ -7,6 +7,7 @@ defmodule AsciiOutput.FromAsciiInput do
 
   @spec generate_map(ascii_input, translater) :: Main.input_map
   def generate_map(ascii_input, translater) do
+    IO.puts "in generate_map"; require InspectVars; InspectVars.inspect([ascii_input, translater])
     add_index_and_reduce(ascii_input, Map.new, &row_from_ascii(&1, &2, translater))
   end
 
